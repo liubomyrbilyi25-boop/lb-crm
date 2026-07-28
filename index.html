@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>LB CRM</title>
+
+<link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#ffffff">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="LB CRM">
+
+
+<style>
+
+:root {
+
+--bg:#F5F5F7;
+--card:#FFFFFF;
+--text:#111111;
+--secondary:#6E6E73;
+--border:#E5E5EA;
+--accent:#111111;
+
+--radius:24px;
+
+}
+
+
+*{
+box-sizing:border-box;
+font-family:
+-apple-system,
+BlinkMacSystemFont,
+"SF Pro Display",
+Arial,
+sans-serif;
+}
+
+
+body{
+
+margin:0;
+background:var(--bg);
+color:var(--text);
+
+}
+
+
+#app{
+
+max-width:600px;
+margin:auto;
+padding:
+
+env(safe-area-inset-top)
+20px
+30px
+20px;
+
+}
+
+
+
+.header{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+
+}
+
+
+.logo{
+
+font-size:32px;
+font-weight:800;
+letter-spacing:-1px;
+
+}
+
+
+.icon-btn{
+
+width:42px;
+height:42px;
+
+border-radius:50%;
+
+border:none;
+
+background:white;
+
+font-size:20px;
+
+}
+
+
+
+.card{
+
+background:var(--card);
+
+border-radius:var(--radius);
+
+padding:22px;
+
+margin-bottom:16px;
+
+box-shadow:
+
+0 10px 30px rgba(0,0,0,.05);
+
+}
+
+
+
+.title{
+
+font-size:15px;
+color:var(--secondary);
+
+}
+
+
+
+.number{
+
+font-size:36px;
+font-weight:800;
+margin-top:8px;
+
+}
+
+
+
+.grid{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:16px;
+
+}
+
+
+
+.menu{
+
+display:grid;
+
+grid-template-columns:
+repeat(3,1fr);
+
+gap:12px;
+
+}
+
+
+
+.menu-item{
+
+background:white;
+
+padding:18px 8px;
+
+border-radius:22px;
+
+text-align:center;
+
+font-size:14px;
+
+}
+
+
+
+.menu-item span{
+
+font-size:24px;
+
+display:block;
+
+margin-bottom:6px;
+
+}
+
+
+
+.progress{
+
+height:12px;
+
+background:#E5E5EA;
+
+border-radius:20px;
+
+overflow:hidden;
+
+}
+
+
+
+.progress-bar{
+
+height:100%;
+
+background:#111;
+
+width:0%;
+
+transition:.5s;
+
+}
+
+
+
+input{
+
+width:100%;
+
+border:1px solid var(--border);
+
+border-radius:16px;
+
+padding:15px;
+
+font-size:16px;
+
+margin-top:12px;
+
+}
+
+
+
+button.primary{
+
+width:100%;
+
+margin-top:12px;
+
+background:#111;
+
+color:white;
+
+border:none;
+
+border-radius:18px;
+
+padding:15px;
+
+font-size:16px;
+
+}
+
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div id="app">
+
+<div class="header">
+
+<div class="logo">
+LB CRM
+</div>
+
+
+<button class="icon-btn">
+☾
+</button>
+
+
+</div>
+
+
+<div class="card">
+
+<div class="title">
+Текущий капитал
+</div>
+
+
+<div class="number" id="balance">
+0 €
+</div>
+
+
+</div>
+
+
+<div class="grid">
+
+
+<div class="card">
+
+<div class="title">
+Доход
+</div>
+
+
+<div class="number" id="income">
+0 €
+</div>
+
+</div>
+
+
+
+<div class="card">
+
+<div class="title">
+Расход
+</div>
+
+
+<div class="number" id="expense">
+0 €
+</div>
+
+</div>
+
+
+</div>
+
+
+<div class="card">
+
+
+<h3>
+💰 Million Tracker
+</h3>
+
+
+<div>
+
+<span id="million">
+0
+</span>
+
+€ / 1 000 000 €
+
+</div>
+
+
+<br>
+
+
+<div class="progress">
+
+<div class="progress-bar" id="progress"></div>
+
+</div>
+
+
+</div>
+
+
+<div class="menu">
+
+
+<div class="menu-item">
+<span>👥</span>
+Leads
+</div>
+
+
+<div class="menu-item">
+<span>🏢</span>
+Clients
+</div>
+
+
+<div class="menu-item">
+<span>📊</span>
+Pipeline
+</div>
+
+
+<div class="menu-item">
+<span>💶</span>
+Finance
+</div>
+
+
+<div class="menu-item">
+<span>🎯</span>
+Goals
+</div>
+
+
+<div class="menu-item">
+<span>📝</span>
+Notes
+</div>
+
+
+</div>
+
+
+<div class="card">
+
+
+<h3>
+Добавить доход
+</h3>
+
+
+<input
+id="amount"
+type="number"
+placeholder="Сумма €">
+
+
+<button class="primary" onclick="addIncome()">
+
+Добавить
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+<script>
+
+let data =
+JSON.parse(
+localStorage.getItem("lbcrm")
+)
+||
+{
+income:0,
+expense:0
+};
+
+
+
+function save(){
+
+localStorage.setItem(
+"lbcrm",
+JSON.stringify(data)
+);
+
+}
+
+
+
+function render(){
+
+let balance =
+data.income-data.expense;
+
+
+document.getElementById("income")
+.innerHTML =
+data.income+" €";
+
+
+document.getElementById("expense")
+.innerHTML =
+data.expense+" €";
+
+
+document.getElementById("balance")
+.innerHTML =
+balance+" €";
+
+
+document.getElementById("million")
+.innerHTML =
+balance;
+
+
+document.getElementById("progress")
+.style.width =
+Math.min(balance/1000000*100,100)+"%";
+
+}
+
+
+
+function addIncome(){
+
+let value =
+Number(
+document.getElementById("amount").value
+);
+
+
+data.income += value;
+
+save();
+
+render();
+
+}
+
+
+
+render();
+
+
+if("serviceWorker" in navigator){
+
+navigator.serviceWorker.register("sw.js");
+
+}
+
+
+</script>
+
+
+</body>
+</html>
